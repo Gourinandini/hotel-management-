@@ -1,10 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
+require('dotenv').config();
+const Groq = require('groq-sdk');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Initialize Groq API (will warn if missing key)
+const groq = new Groq({});
 
 const PORT = process.env.PORT || 3001;
 
@@ -85,6 +90,52 @@ app.get('/api/bookings/:id', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// AI Chat Concierge Endpoint
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message, history } = req.body;
+    
+    // Check if API key is provided
+    if (!process.env.GROQ_API_KEY) {
+      return res.json({ 
+        reply: "To experience the full AI Concierge, please add your `GROQ_API_KEY` to the `booking-api/.env` file. For now, I'm happily running in offline demo mode!" 
+      });
+    }
+
+    // Fetch context from DB to make AI "aware"
+    const { rows: hotels } = await db.query('SELECT id, name, location, rating FROM hotels');
+    const hotelContext = hotels.map(h => `${h.name} in ${h.location} (${h.rating} stars)`).join(', ');
+
+    const systemPrompt = `You are an elite, luxurious hotel concierge named 'Aura'. You are incredibly polite, refined, and helpful. 
+You work for 'Premium Stays'. 
+Currently, our active hotels in the database are: ${hotelContext}.
+Keep answers concise, extremely helpful, and try to assist the user in finding a great room based on our locations. 
+If they ask about prices, suggest they click "Reserve Room" on the UI to see live rates.`;
+
+    const messages = [
+        { role: 'system', content: systemPrompt },
+        { role: 'assistant', content: "Hello! I am Aura, your premium concierge. How can I assist you with your stay today?" },
+        ...history.map(m => ({
+            role: m.role === 'model' ? 'assistant' : 'user',
+            content: m.parts[0].text
+        })),
+        { role: 'user', content: message }
+    ];
+
+    const response = await groq.chat.completions.create({
+        model: 'llama-3.3-70b-versatile',
+        messages: messages,
+        temperature: 0.7,
+        max_tokens: 1024,
+    });
+
+    res.json({ reply: response.choices[0].message.content });
+  } catch (err) {
+    console.error("AI Error:", err);
+    res.status(500).json({ error: 'AI Concierge is unavailable right now.' });
   }
 });
 
