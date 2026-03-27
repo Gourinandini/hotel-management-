@@ -49,3 +49,18 @@ Build a robust Service-Oriented Architecture (SOA) that encompasses a hotel book
   3. One-time Migration logic check.
   4. Real-time syncing (creating a booking in UI -> verifying it lands in MongoDB via Kafka log).
   5. Searching the newly imported data successfully.
+
+## AI Travel Assistant Implementation Plan
+
+1. **Backend (`booking-api/index.js`)**
+   - Create a new endpoint `POST /api/itinerary` utilizing the existing `groq-sdk`.
+   - Query Postgres for rich hotel data including rooms and pricing: `SELECT h.id, h.name, h.location, h.rating, r.price_per_night FROM hotels h JOIN rooms r ON h.id = r.hotel_id`.
+   - Implement the exact system prompt described by the user (prioritize shortest distance, lower price, higher ratings; filter available rooms; structured step-by-step output).
+   
+2. **Frontend (`frontend/src/App.jsx`)**
+   - Add a new tab/view state `view === 'itinerary'` called "AI Itinerary Planner".
+   - Create a dedicated form asking for "Current Location", "Destination", "Max Price", "Max Distance/Proximity", and "Minimum Rating".
+   - Display the generated step-by-step Travel Assistant itinerary.
+   
+### Verification Plan
+- **Manual Verification**: Run `npm run start:backend` and `npm run start:frontend`. Click on "AI Itinerary Planner", input a test origin and destination, and verify the AI outputs the step-by-step itinerary with 2-3 hotel recommendations meeting the guidelines.

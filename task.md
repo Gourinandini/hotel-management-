@@ -32,3 +32,15 @@
   - [x] Script to trigger One-Time Data Migration
   - [x] Script or UI to demonstrate searching the new data
   - [x] Provide instructions for the final demo
+
+- [x] AI Travel Assistant Feature
+  - [x] Add `POST /api/itinerary` endpoint with Groq LLM logic and DB hotel query.
+  - [x] Build React UI tab for "AI Itinerary Planner" with Origin/Destination form.
+  - [/] Test the integration to ensure output matches the required step-by-step format.
+
+- [ ] Run & Verify System
+  - [/] Start infrastructure (Postgres, MongoDB, Kafka)
+  - [ ] Run data migration
+  - [ ] Start all microservices and frontend
+  - [ ] Verify AI Travel Assistant output
+  - [ ] Verify Kafka CDC sync

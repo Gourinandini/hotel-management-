@@ -44,6 +44,7 @@ h1.main-title {
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 2.5rem;
   text-align: center;
@@ -551,3 +552,126 @@ input::placeholder {
   align-items: center;
   justify-content: center;
 }
+/* Itinerary Markdown Styling */
+.itinerary-content {
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+.itinerary-content h1, .itinerary-content h2, .itinerary-content h3 {
+  color: var(--accent);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.itinerary-content h3 {
+  font-size: 1.25rem;
+  border-bottom: 2px solid #e0e7ff;
+  padding-bottom: 0.25rem;
+  display: inline-block;
+}
+
+.itinerary-content ul, .itinerary-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.itinerary-content li {
+  margin-bottom: 0.5rem;
+}
+
+.itinerary-content li strong {
+  color: var(--accent);
+}
+
+.itinerary-content p {
+  margin-bottom: 1rem;
+}
+
+.itinerary-content blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+  margin-left: 0;
+  color: var(--text-secondary);
+  font-style: italic;
+  background: #f1f5f9;
+  padding: 1rem;
+  border-radius: 0 12px 12px 0;
+}
+
+/* 3-Tier Hotel Grid */
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .tier-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tier-hotel-card {
+  border: 1px solid;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.tier-hotel-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.tier-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  align-self: flex-start;
+}
+
+/* Attraction Items */
+.attraction-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.attraction-item:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.maps-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.3rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #4f46e5;
+  background: #e0e7ff;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.maps-link:hover {
+  background: #c7d2fe;
+  color: #3730a3;
+}
+
